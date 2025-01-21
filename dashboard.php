@@ -58,3 +58,46 @@ if (isset($_GET['delete_task'])) {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, <?php echo $_SESSION['username']; ?>!</h1>
+
+    <!-- add task disgram -->
+    <h2>Add Task</h2>
+    <form method="POST" action="">
+        <label for="title">Task Title:</label>
+        <input type="text" name="title" id="title" required><br>
+        <label for="description">Description:</label>
+        <textarea name="description" id="description"></textarea><br>
+        <label for="due_date">Due Date:</label>
+        <input type="date" name="due_date" id="due_date" required><br>
+        <button type="submit" name="add_task">Add Task</button>
+    </form>
+
+    <!-- show task diagram -->
+    <h2>Your Tasks</h2>
+    <?php if (!empty($tasks)): ?>
+        <ul>
+            <?php foreach ($tasks as $task): ?>
+                <li>
+                    <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
+                    <?php echo htmlspecialchars($task['status']); ?> 
+                    (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
+                    <a href="?delete_task=<?php echo $task['id']; ?>">Delete</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>No tasks found. Add your first task!</p>
+    <?php endif; ?>
+
+    <a href="logout.php">Logout</a>
+</body>
+</html>
