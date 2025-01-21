@@ -44,4 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
         echo "Title and due date are required.";
     }
 }
+
+// delete task
+if (isset($_GET['delete_task'])) {
+    $task_id = $_GET['delete_task'];
+    try {
+        $stmt = $pdo->prepare("DELETE FROM tasks WHERE id = :task_id AND user_id = :user_id");
+        $stmt->execute([':task_id' => $task_id, ':user_id' => $user_id]);
+        header("Location: dashboard.php");
+        exit;
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
+    }
+}
 ?>
