@@ -19,4 +19,29 @@ try {
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage());
 }
+
+// add task
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $due_date = $_POST['due_date'];
+
+    if (!empty($title) && !empty($due_date)) {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO tasks (user_id, title, description, due_date) VALUES (:user_id, :title, :description, :due_date)");
+            $stmt->execute([
+                ':user_id' => $user_id,
+                ':title' => $title,
+                ':description' => $description,
+                ':due_date' => $due_date
+            ]);
+            header("Location: dashboard.php");
+            exit;
+        } catch (PDOException $e) {
+            die("Error: " . $e->getMessage());
+        }
+    } else {
+        echo "Title and due date are required.";
+    }
+}
 ?>
