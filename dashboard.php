@@ -111,26 +111,13 @@ if (isset($_GET['update_status']) && isset($_GET['task_id'])) {
     <h2>Your Tasks</h2>
     <?php if (!empty($tasks)): ?>
         <ul>
-            <?php foreach ($tasks as $task): ?>
-                <li>
-                    <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
-                    <?php echo htmlspecialchars($task['status']); ?> 
-                    (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
-                    <a href="?delete_task=<?php echo $task['id']; ?>">Delete</a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
-        <p>No tasks found. Add your first task!</p>
-    <?php endif; ?>
-    <!-- status diagrm -->
-    <ul>
         <?php foreach ($tasks as $task): ?>
             <li>
                 <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
                 <?php echo htmlspecialchars($task['status']); ?> 
                 (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
-
+                <!-- delete botton -->
+                <a href="?delete_task=<?php echo $task['id']; ?>">Delete</a>
                 <!-- update status botton -->
                 <?php if ($task['status'] === 'pending'): ?>
                     <a href="?update_status=in_progress&task_id=<?php echo $task['id']; ?>">Mark as In Progress</a>
@@ -144,6 +131,9 @@ if (isset($_GET['update_status']) && isset($_GET['task_id'])) {
             </li>
         <?php endforeach; ?>
     </ul>
+    <?php else: ?>
+        <p>No tasks found. Add your first task!</p>
+    <?php endif; ?>
     <a href="logout.php">Logout</a>
 </body>
 </html>
