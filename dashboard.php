@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
                 <?php echo htmlspecialchars($task['status']); ?> 
                 (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
                 <!-- delete botton -->
-                <a href="?delete_task=<?php echo $task['id']; ?>">Delete</a>
+                <a href="?delete_task=<?php echo $task['id']; ?>" onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
 
                 <!-- update status botton -->
                 <?php if ($task['status'] === 'pending'): ?>
