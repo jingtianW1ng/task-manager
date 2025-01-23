@@ -118,15 +118,45 @@ if (isset($_GET['update_status']) && isset($_GET['task_id'])) {
                 (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
                 <!-- delete botton -->
                 <a href="?delete_task=<?php echo $task['id']; ?>">Delete</a>
+
                 <!-- update status botton -->
                 <?php if ($task['status'] === 'pending'): ?>
-                    <a href="?update_status=in_progress&task_id=<?php echo $task['id']; ?>">Mark as In Progress</a>
-                    <a href="?update_status=completed&task_id=<?php echo $task['id']; ?>">Mark as Completed</a>
+                    <!-- Pending -> In Progress -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                        <input type="hidden" name="new_status" value="in_progress">
+                        <button type="submit">Mark as In Progress</button>
+                    </form>
+                    
+                    <!-- Pending -> Completed -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                        <input type="hidden" name="new_status" value="completed">
+                        <button type="submit">Mark as Completed</button>
+                    </form>
+
                 <?php elseif ($task['status'] === 'in_progress'): ?>
-                    <a href="?update_status=pending&task_id=<?php echo $task['id']; ?>">Mark as Pending</a>
-                    <a href="?update_status=completed&task_id=<?php echo $task['id']; ?>">Mark as Completed</a>
+                    <!-- In Progress -> Pending -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                        <input type="hidden" name="new_status" value="pending">
+                        <button type="submit">Mark as Pending</button>
+                    </form>
+                    
+                    <!-- In Progress -> Completed -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                        <input type="hidden" name="new_status" value="completed">
+                        <button type="submit">Mark as Completed</button>
+                    </form>
+
                 <?php elseif ($task['status'] === 'completed'): ?>
-                    <a href="?update_status=pending&task_id=<?php echo $task['id']; ?>">Mark as Pending</a>
+                    <!-- Completed -> Pending -->
+                    <form method="POST" action="">
+                        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                        <input type="hidden" name="new_status" value="pending">
+                        <button type="submit">Mark as Pending</button>
+                    </form>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>
