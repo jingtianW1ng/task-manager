@@ -57,6 +57,32 @@ if (isset($_GET['delete_task'])) {
         die("Error: " . $e->getMessage());
     }
 }
+
+// check status
+if (isset($_GET['update_status']) && isset($_GET['task_id'])) {
+    $new_status = $_GET['update_status'];
+    $task_id = $_GET['task_id'];
+
+    // varify valid status
+    $valid_statuses = ['pending', 'in_progress', 'completed'];
+    if (!in_array($new_status, $valid_statuses)) {
+        die("Invalid status.");
+    }
+
+    // update status
+    try {
+        $stmt = $pdo->prepare("UPDATE tasks SET status = :new_status WHERE id = :task_id AND user_id = :user_id");
+        $stmt->execute([
+            ':new_status' => $new_status,
+            ':task_id' => $task_id,
+            ':user_id' => $user_id
+        ]);
+        header("Location: dashboard.php");
+        exit;
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
+    }
+}
 ?>
 
 <!DOCTYPE html>
