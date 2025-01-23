@@ -59,15 +59,15 @@ if (isset($_GET['delete_task'])) {
 }
 
 // check status
-if (isset($_GET['update_status']) && isset($_GET['task_id'])) {
-    $new_status = $_GET['update_status'];
-    $task_id = $_GET['task_id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isset($_POST['task_id'])) {
+    $new_status = $_POST['new_status'];
+    $task_id = $_POST['task_id'];
 
     // varify valid status
     $valid_statuses = ['pending', 'in_progress', 'completed'];
     if (!in_array($new_status, $valid_statuses)) {
         die("Invalid status.");
-    }
+    }   
 
     // update status
     try {
