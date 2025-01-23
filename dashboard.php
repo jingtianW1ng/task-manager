@@ -97,6 +97,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
 
     <!-- add task disgram -->
     <h2>Add Task</h2>
+    <!-- valid input check   -->
+    <script>
+    function validateTaskForm() {
+        const title = document.getElementById('title').value.trim();
+        const dueDate = document.getElementById('due_date').value.trim();
+
+        if (!title || !dueDate) {
+            alert("Title and Due Date are required!");
+            return false;
+        }
+        return true;
+    }
+    </script>
+    <!-- add task button   -->
     <form method="POST" action="">
         <label for="title">Task Title:</label>
         <input type="text" name="title" id="title" required><br>
@@ -117,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
                 <?php echo htmlspecialchars($task['status']); ?> 
                 (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
                 <!-- delete botton -->
-                <button href="?delete_task=<?php echo $task['id']; ?>" onclick="return confirm('Are you sure you want to delete this task?');">Delete</button>
+                <a href="?delete_task=<?php echo $task['id']; ?>" onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
 
                 <!-- update status botton -->
                 <?php if ($task['status'] === 'pending'): ?>
