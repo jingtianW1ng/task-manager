@@ -97,7 +97,27 @@ if (isset($_GET['delete_task'])) {
     <?php else: ?>
         <p>No tasks found. Add your first task!</p>
     <?php endif; ?>
+    <!-- status diagrm -->
+    <ul>
+        <?php foreach ($tasks as $task): ?>
+            <li>
+                <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
+                <?php echo htmlspecialchars($task['status']); ?> 
+                (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
 
+                <!-- update status botton -->
+                <?php if ($task['status'] === 'pending'): ?>
+                    <a href="?update_status=in_progress&task_id=<?php echo $task['id']; ?>">Mark as In Progress</a>
+                    <a href="?update_status=completed&task_id=<?php echo $task['id']; ?>">Mark as Completed</a>
+                <?php elseif ($task['status'] === 'in_progress'): ?>
+                    <a href="?update_status=pending&task_id=<?php echo $task['id']; ?>">Mark as Pending</a>
+                    <a href="?update_status=completed&task_id=<?php echo $task['id']; ?>">Mark as Completed</a>
+                <?php elseif ($task['status'] === 'completed'): ?>
+                    <a href="?update_status=pending&task_id=<?php echo $task['id']; ?>">Mark as Pending</a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
     <a href="logout.php">Logout</a>
 </body>
 </html>
