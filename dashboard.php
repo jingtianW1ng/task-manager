@@ -110,8 +110,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
         return true;
     }
     </script>
+    
     <!-- add task button   -->
-    <form method="POST" action="">
+    <form method="POST" action="api/add_task.php">
         <label for="title">Task Title:</label>
         <input type="text" name="title" id="title" required><br>
         <label for="description">Description:</label>
