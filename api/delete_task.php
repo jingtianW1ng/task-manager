@@ -1,9 +1,11 @@
 <?php
 require_once '../config/db.php';
 session_start();
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
-    die("Unauthorized");
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id'])) {
@@ -15,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id'])) {
             ':task_id' => $task_id,
             ':user_id' => $_SESSION['user_id']
         ]);
-        echo "Task deleted successfully";
+        echo json_encode(["status" => "success", "message" => "Task deleted successfully!"]);
     } catch (PDOException $e) {
-        die("Error: " . $e->getMessage());
+        echo json_encode(["status" => "error", "message" => "Error deleting task"]);
     }
 }
 ?>

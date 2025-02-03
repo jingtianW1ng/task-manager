@@ -1,9 +1,11 @@
 <?php
 require_once '../config/db.php';
 session_start();
+header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
-    die("Unauthorized");
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id']) && isset($_POST['new_status'])) {
@@ -12,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id']) && isset($
 
     $valid_statuses = ['pending', 'in_progress', 'completed'];
     if (!in_array($new_status, $valid_statuses)) {
-        die("Invalid status.");
+        echo json_encode(["status" => "error", "message" => "Invalid status"]);
+        exit;
     }
 
     try {
@@ -22,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id']) && isset($
             ':task_id' => $task_id,
             ':user_id' => $_SESSION['user_id']
         ]);
-        echo "Task updated successfully";
+        echo json_encode(["status" => "success", "message" => "Task updated successfully!"]);
     } catch (PDOException $e) {
-        die("Error: " . $e->getMessage());
+        echo json_encode(["status" => "error", "message" => "Error updating task"]);
     }
 }
 ?>
