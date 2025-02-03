@@ -1,10 +1,11 @@
 <?php
 require_once '../config/db.php';
 session_start();
+header('Content-Type: application/json');
 
-// make sure user already login
 if (!isset($_SESSION['user_id'])) {
-    die("Unauthorized");
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title']) && isset($_POST['due_date'])) {
@@ -12,19 +13,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title']) && isset($_P
     $due_date = $_POST['due_date'];
 
     if (empty($title) || empty($due_date)) {
-        die("Title and Due Date are required.");
+        echo json_encode(["status" => "error", "message" => "Title and Due Date are required."]);
+        exit;
     }
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO tasks (user_id, title, due_date) VALUES (:user_id, :title, :due_date)");
+        $stmt = $pdo->prepare("INSERT INTO tasks (user_id, title, due_date, status) VALUES (:user_id, :title, :due_date, 'pending')");
         $stmt->execute([
             ':user_id' => $_SESSION['user_id'],
             ':title' => $title,
             ':due_date' => $due_date
         ]);
-        echo "Task added successfully";
+
+        // get nes task ID
+        $task_id = $pdo->lastInsertId();
+
+        echo json_encode(["status" => "success", "message" => "Task added successfully!", "task_id" => $task_id]);
     } catch (PDOException $e) {
-        die("Error: " . $e->getMessage());
+        echo json_encode(["status" => "error", "message" => "Error adding task."]);
     }
 }
 ?>
