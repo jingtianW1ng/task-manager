@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
         return true;
     }
     </script>
-    
+
     <!-- add task button   -->
     <form method="POST" action="api/add_task.php">
         <label for="title">Task Title:</label>
@@ -131,8 +131,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_status']) && isse
                 <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
                 <?php echo htmlspecialchars($task['status']); ?> 
                 (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
+                
                 <!-- delete botton -->
-                <a href="?delete_task=<?php echo $task['id']; ?>" onclick="return confirm('Are you sure you want to delete this task?');">Delete</a>
+                <form method="POST" action="api/delete_task.php">
+                    <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                    <button type="submit">Delete</button>
+                </form>
 
                 <!-- update status botton -->
                 <?php if ($task['status'] === 'pending'): ?>
