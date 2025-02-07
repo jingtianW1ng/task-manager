@@ -52,21 +52,28 @@ try {
                 if (data.status === "success") {
                     document.getElementById("message").innerText = data.message;
 
-                    // add new task list
+                    // add new task to list
                     let taskList = document.getElementById("task-list");
                     let newTask = document.createElement("li");
                     newTask.id = `task-${data.task_id}`;
-                    newTask.classList.add("task-item", "task-pending"); // let new task start with `task-pending` class
+                    newTask.classList.add("task-item", "task-pending"); 
 
                     newTask.innerHTML = `
-                        <strong>${title}</strong> - pending (Due: ${dueDate})
-                        <p>${description}</p>
-                        <select onchange="updateTaskStatus(${data.task_id}, this.value)">
-                            <option value="pending" selected>Pending</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                        <button class="delete-btn" onclick="deleteTask(${data.task_id})">Delete</button>
+                        <div class="task-content">
+                            <strong>${title}</strong> - pending (Due: ${dueDate})
+                            <p class="task-desc" id="desc-${data.task_id}" style="display: none;">
+                                ${description.replace(/\n/g, "<br>")}
+                            </p>
+                            <button class="toggle-desc-btn" onclick="toggleDescription(${data.task_id})">Show Details</button>
+                        </div>
+                        <div class="task-actions">
+                            <select onchange="updateTaskStatus(${data.task_id}, this.value)">
+                                <option value="pending" selected>Pending</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <button class="delete-btn" onclick="deleteTask(${data.task_id})">Delete</button>
+                        </div>
                     `;
                     taskList.appendChild(newTask);
 
@@ -80,7 +87,6 @@ try {
             })
             .catch(error => console.error("Error:", error));
         }
-
         // update status（AJAX）
         function updateTaskStatus(taskId, newStatus) {
             fetch("api/update_task.php", {
@@ -161,26 +167,24 @@ try {
     <ul id="task-list">
         <?php foreach ($tasks as $task): ?>
             <li id="task-<?php echo $task['id']; ?>" class="task-item task-<?php echo $task['status']; ?>">
-                <span>
-                    <strong><?php echo htmlspecialchars($task['title']); ?></strong>
-                    <small>(Due: <?php echo htmlspecialchars($task['due_date']); ?>)</small>
-                </span>
-                
-                <!-- toggle -->
-                <div>
+                <div class="task-content">
+                    <div class="task-header">
+                        <strong><?php echo htmlspecialchars($task['title']); ?></strong>
+                        <small>(Due: <?php echo htmlspecialchars($task['due_date']); ?>)</small>
+                    </div>
+
                     <p class="task-desc" id="desc-<?php echo $task['id']; ?>" style="display: none;">
                         <?php echo nl2br(htmlspecialchars($task['description'])); ?>
                     </p>
                     <button class="toggle-desc-btn" onclick="toggleDescription(<?php echo $task['id']; ?>)">Show Details</button>
                 </div>
 
-                <div>
+                <div class="task-actions">
                     <select onchange="updateTaskStatus(<?php echo $task['id']; ?>, this.value)">
                         <option value="pending" <?php if ($task['status'] === 'pending') echo 'selected'; ?>>Pending</option>
                         <option value="in_progress" <?php if ($task['status'] === 'in_progress') echo 'selected'; ?>>In Progress</option>
                         <option value="completed" <?php if ($task['status'] === 'completed') echo 'selected'; ?>>Completed</option>
                     </select>
-
                     <button class="delete-btn" onclick="deleteTask(<?php echo $task['id']; ?>)">Delete</button>
                 </div>
             </li>
