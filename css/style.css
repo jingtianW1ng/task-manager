@@ -1,0 +1,103 @@
+/* 全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* title */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* message txt */
+#message {
+    text-align: center;
+    font-size: 16px;
+    color: green;
+    margin-bottom: 20px;
+}
+
+/* task diagram */
+form {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+form input, form select, form button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* submit bottom */
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* diagram style */
+#task-list {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+/* task item */
+.task-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-left: 5px solid #ccc;
+}
+
+/* differernt statues colour */
+.task-pending {
+    border-left-color: #f39c12;
+}
+
+.task-in_progress {
+    border-left-color: #3498db;
+}
+
+.task-completed {
+    border-left-color: #2ecc71;
+}
+
+/* delete buttom */
+.delete-btn {
+    background: #dc3545;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
