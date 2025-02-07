@@ -52,10 +52,12 @@ try {
                 if (data.status === "success") {
                     document.getElementById("message").innerText = data.message;
 
-                    // 添加新任务到列表
+                    // add new task list
                     let taskList = document.getElementById("task-list");
                     let newTask = document.createElement("li");
                     newTask.id = `task-${data.task_id}`;
+                    newTask.classList.add("task-item", "task-pending"); // let new task start with `task-pending` class
+
                     newTask.innerHTML = `
                         <strong>${title}</strong> - pending (Due: ${dueDate})
                         <p>${description}</p>
@@ -64,11 +66,11 @@ try {
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
-                        <button onclick="deleteTask(${data.task_id})">Delete</button>
+                        <button class="delete-btn" onclick="deleteTask(${data.task_id})">Delete</button>
                     `;
                     taskList.appendChild(newTask);
 
-                    // 清空输入框
+                    // empty input
                     document.getElementById("title").value = "";
                     document.getElementById("due_date").value = "";
                     document.getElementById("description").value = "";
