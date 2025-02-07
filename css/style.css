@@ -35,6 +35,26 @@ form {
     margin: 0 auto;
 }
 
+/* toggle */
+.task-desc {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.toggle-desc-btn {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    padding: 0;
+}
+.toggle-desc-btn:hover {
+    text-decoration: underline;
+}
+
 form label {
     display: block;
     font-weight: bold;

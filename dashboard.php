@@ -120,6 +120,20 @@ try {
             })
             .catch(error => console.error("Error:", error));
         }
+
+        //toggle description
+        function toggleDescription(taskId) {
+            let desc = document.getElementById("desc-" + taskId);
+            let btn = document.querySelector(`#task-${taskId} .toggle-desc-btn`);
+
+            if (desc.style.display === "none") {
+                desc.style.display = "block";
+                btn.innerText = "Hide Details";
+            } else {
+                desc.style.display = "none";
+                btn.innerText = "Show Details";
+            }
+        }
     </script>
 </head>
 <body>
@@ -151,6 +165,14 @@ try {
                     <strong><?php echo htmlspecialchars($task['title']); ?></strong>
                     <small>(Due: <?php echo htmlspecialchars($task['due_date']); ?>)</small>
                 </span>
+                
+                <!-- toggle -->
+                <div>
+                    <p class="task-desc" id="desc-<?php echo $task['id']; ?>" style="display: none;">
+                        <?php echo nl2br(htmlspecialchars($task['description'])); ?>
+                    </p>
+                    <button class="toggle-desc-btn" onclick="toggleDescription(<?php echo $task['id']; ?>)">Show Details</button>
+                </div>
 
                 <div>
                     <select onchange="updateTaskStatus(<?php echo $task['id']; ?>, this.value)">
