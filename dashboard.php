@@ -35,6 +35,7 @@ try {
 
             let title = document.getElementById("title").value;
             let dueDate = document.getElementById("due_date").value;
+            let description = document.getElementById("description").value;
 
             if (!title || !dueDate) {
                 alert("Title and Due Date are required!");
@@ -44,29 +45,33 @@ try {
             fetch("api/add_task.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `title=${encodeURIComponent(title)}&due_date=${encodeURIComponent(dueDate)}`
+                body: `title=${encodeURIComponent(title)}&due_date=${encodeURIComponent(dueDate)}&description=${encodeURIComponent(description)}`
             })
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
                     document.getElementById("message").innerText = data.message;
 
-                    // add new task to list
+                    // 添加新任务到列表
                     let taskList = document.getElementById("task-list");
                     let newTask = document.createElement("li");
                     newTask.id = `task-${data.task_id}`;
-                    newTask.innerHTML = `<strong>${title}</strong> - pending (Due: ${dueDate})
+                    newTask.innerHTML = `
+                        <strong>${title}</strong> - pending (Due: ${dueDate})
+                        <p>${description}</p>
                         <select onchange="updateTaskStatus(${data.task_id}, this.value)">
                             <option value="pending" selected>Pending</option>
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
-                        <button onclick="deleteTask(${data.task_id})">Delete</button>`;
+                        <button onclick="deleteTask(${data.task_id})">Delete</button>
+                    `;
                     taskList.appendChild(newTask);
 
-                    // empty txt
+                    // 清空输入框
                     document.getElementById("title").value = "";
                     document.getElementById("due_date").value = "";
+                    document.getElementById("description").value = "";
                 } else {
                     alert("Error: " + data.message);
                 }
@@ -128,6 +133,9 @@ try {
 
         <label for="due_date">Due Date:</label>
         <input type="date" name="due_date" id="due_date" required><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" rows="3" placeholder="Enter additional details..."></textarea><br>
 
         <button type="submit">Add Task</button>
     </form>

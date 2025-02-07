@@ -41,13 +41,22 @@ form label {
     margin-top: 10px;
 }
 
-form input, form select, form button {
+/* change `textarea` style */
+form textarea {
+    resize: vertical; /* resize vertical */
+    min-height: 60px; /* set min height */
+    max-height: 150px; /* set max height */
+    font-family: Arial, sans-serif;
+}
+
+form input, form select, form button, form textarea {
     width: 100%;  /* 让宽度填满 */
     padding: 10px 12px; /* 左右都 12px，确保均匀 */
     margin-top: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box; /* 确保 padding 计算在 width 内 */
+    font-size: 16px;
 }
 
 /* submit bottom */
