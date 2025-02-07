@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// get task
+// get task test
 try {
     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE user_id = :user_id");
     $stmt->execute([':user_id' => $_SESSION['user_id']]);
