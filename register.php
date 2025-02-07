@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // verify
     if (empty($username) || empty($email) || empty($password)) {
-        echo "All fields are required.";
+        echo "<p class='error-message'>All fields are required.</p>";
         exit;
     }
 
@@ -23,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':email' => $email,
             ':password' => $hashedPassword
         ]);
-        echo "Registration successful!";
+        echo "<p class='success-message'>Registration successful!</p>";
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        echo "<p class='error-message'>Error: " . $e->getMessage() . "</p>";
     }
 }
 ?>
@@ -36,17 +36,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
+    <link rel="stylesheet" href="css/style.css"> <!-- 引入 dashboard 样式 -->
 </head>
 <body>
     <h1>Register</h1>
-    <form method="POST" action="">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br>
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br>
-        <button type="submit">Register</button>
-    </form>
+
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        <form method="POST" action="">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
 </body>
 </html>
