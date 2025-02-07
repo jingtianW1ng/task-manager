@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            header("Location: dashboard.php");
+            echo "<p class='success-message'>Login successful! Redirecting...</p>";
+            echo "<script>setTimeout(() => { window.location.href = 'dashboard.php'; }, 2000);</script>";
             exit;
         } else {
             echo "<p class='error-message'>Invalid email or password.</p>";
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" id="password" required>
 
             <button type="submit">Login</button>
+            <p>Don't have an account? <a href="register.php">Sign up here</a></p>
         </form>
     </div>
 </body>

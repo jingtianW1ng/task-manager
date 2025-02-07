@@ -6,16 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // verify
     if (empty($username) || empty($email) || empty($password)) {
         echo "<p class='error-message'>All fields are required.</p>";
         exit;
     }
 
-    // password hash
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // insert to database
     try {
         $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
         $stmt->execute([
@@ -23,7 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':email' => $email,
             ':password' => $hashedPassword
         ]);
-        echo "<p class='success-message'>Registration successful!</p>";
+
+        //auto jump to login
+        echo "<p class='success-message'>Registration successful! Redirecting...</p>";
+        echo "<script>setTimeout(() => { window.location.href = 'login.php'; }, 2000);</script>"; // 2秒后跳转
+        exit;
     } catch (PDOException $e) {
         echo "<p class='error-message'>Error: " . $e->getMessage() . "</p>";
     }
@@ -54,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" id="password" required>
 
             <button type="submit">Register</button>
+            <p>Already have an account? <a href="login.php">Login here</a></p>
         </form>
     </div>
 </body>
