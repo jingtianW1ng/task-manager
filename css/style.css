@@ -12,6 +12,11 @@ h1 {
     color: #333;
 }
 
+h2 {
+    text-align: center;
+    color: #333;
+}
+
 /* message txt */
 #message {
     text-align: center;
@@ -37,11 +42,12 @@ form label {
 }
 
 form input, form select, form button {
-    width: 100%;
-    padding: 8px;
+    width: 100%;  /* 让宽度填满 */
+    padding: 10px 12px; /* 左右都 12px，确保均匀 */
     margin-top: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    box-sizing: border-box; /* 确保 padding 计算在 width 内 */
 }
 
 /* submit bottom */

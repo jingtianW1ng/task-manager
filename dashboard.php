@@ -136,18 +136,21 @@ try {
     <h2>Your Tasks</h2>
     <ul id="task-list">
         <?php foreach ($tasks as $task): ?>
-            <li id="task-<?php echo $task['id']; ?>">
-                <strong><?php echo htmlspecialchars($task['title']); ?></strong> - 
-                <?php echo htmlspecialchars($task['status']); ?>
-                (Due: <?php echo htmlspecialchars($task['due_date']); ?>)
+            <li id="task-<?php echo $task['id']; ?>" class="task-item task-<?php echo $task['status']; ?>">
+                <span>
+                    <strong><?php echo htmlspecialchars($task['title']); ?></strong>
+                    <small>(Due: <?php echo htmlspecialchars($task['due_date']); ?>)</small>
+                </span>
 
-                <select onchange="updateTaskStatus(<?php echo $task['id']; ?>, this.value)">
-                    <option value="pending" <?php if ($task['status'] === 'pending') echo 'selected'; ?>>Pending</option>
-                    <option value="in_progress" <?php if ($task['status'] === 'in_progress') echo 'selected'; ?>>In Progress</option>
-                    <option value="completed" <?php if ($task['status'] === 'completed') echo 'selected'; ?>>Completed</option>
-                </select>
+                <div>
+                    <select onchange="updateTaskStatus(<?php echo $task['id']; ?>, this.value)">
+                        <option value="pending" <?php if ($task['status'] === 'pending') echo 'selected'; ?>>Pending</option>
+                        <option value="in_progress" <?php if ($task['status'] === 'in_progress') echo 'selected'; ?>>In Progress</option>
+                        <option value="completed" <?php if ($task['status'] === 'completed') echo 'selected'; ?>>Completed</option>
+                    </select>
 
-                <button onclick="deleteTask(<?php echo $task['id']; ?>)">Delete</button>
+                    <button class="delete-btn" onclick="deleteTask(<?php echo $task['id']; ?>)">Delete</button>
+                </div>
             </li>
         <?php endforeach; ?>
     </ul>
