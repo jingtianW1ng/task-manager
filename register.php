@@ -1,38 +1,37 @@
 <?php
 require_once 'config/db.php';
 require_once __DIR__ . '/security/security.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // check CSRF toekn
-    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    // check csrf token
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die(json_encode(["status" => "error", "message" => "CSRF token validation failed"]));
     }
 
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
     if (empty($username) || empty($email) || empty($password)) {
-        echo "<p class='error-message'>All fields are required.</p>";
-        exit;
-    }
+        $error_message = "All fields are required.";
+    } else {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        try {
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+            $stmt->execute([
+                ':username' => $username,
+                ':email' => $email,
+                ':password' => $hashedPassword
+            ]);
 
-    try {
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-        $stmt->execute([
-            ':username' => $username,
-            ':email' => $email,
-            ':password' => $hashedPassword
-        ]);
-
-        //auto jump to login
-        echo "<p class='success-message'>Registration successful! Redirecting...</p>";
-        echo "<script>setTimeout(() => { window.location.href = 'login.php'; }, 2000);</script>"; // 2秒后跳转
-        exit;
-    } catch (PDOException $e) {
-        echo "<p class='error-message'>Error: " . $e->getMessage() . "</p>";
+            // registe success jujmp to login
+            header("Location: login.php");
+            exit;
+        } catch (PDOException $e) {
+            $error_message = "Error: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -43,13 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
-    <link rel="stylesheet" href="css/style.css"> <!-- 引入 dashboard 样式 -->
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
     <h1>Register</h1>
 
     <div class="form-container">
         <h2>Sign Up</h2>
+        <?php if (!empty($error_message)): ?>
+            <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
+        <?php endif; ?>
+        
         <form method="POST" action="">
             <!-- add csrf token -->
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
