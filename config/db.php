@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $host = 'sql306.infinityfree.com';  // host name
 $dbname = 'if0_38266485_task_manager';  // database name
 $username = 'if0_38266485';  // database username

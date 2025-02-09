@@ -2,10 +2,10 @@
 session_start();
 
 /** force https avoid MITM */
-if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
-    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    exit();
-}
+//if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+//    header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+//    exit();
+//}
 
 /** close error report avoid information leak */
 ini_set('display_errors', 0);
