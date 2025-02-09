@@ -1,5 +1,6 @@
 <?php
 require_once '../config/db.php';
+require_once __DIR__ . '/security/security.php';
 session_start();
 header('Content-Type: application/json');
 
@@ -9,6 +10,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task_id']) && isset($_POST['new_status'])) {
+    // check CSRF token
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die(json_encode(["status" => "error", "message" => "CSRF token validation failed"]));
+    }
     $task_id = intval($_POST['task_id']);
     $new_status = $_POST['new_status'];
 

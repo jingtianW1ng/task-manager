@@ -1,7 +1,13 @@
 <?php
 require_once 'config/db.php';
+require_once __DIR__ . '/security/security.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // check CSRF toekn
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die(json_encode(["status" => "error", "message" => "CSRF token validation failed"]));
+    }
+
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -45,6 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-container">
         <h2>Sign Up</h2>
         <form method="POST" action="">
+            <!-- add csrf token -->
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+            
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
 

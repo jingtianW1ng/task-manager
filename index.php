@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/security/security.php';
 session_start();
 ?>
 

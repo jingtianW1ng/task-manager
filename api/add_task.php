@@ -1,5 +1,6 @@
 <?php
 require_once '../config/db.php';
+require_once __DIR__ . '/security/security.php';
 session_start();
 header('Content-Type: application/json');
 
@@ -9,6 +10,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title']) && isset($_POST['due_date'])) {
+    // check CSRF toekn
+    if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die(json_encode(["status" => "error", "message" => "CSRF token validation failed"]));
+    }
+
     $title = trim($_POST['title']);
     $due_date = $_POST['due_date'];
     $description = isset($_POST['description']) ? trim($_POST['description']) : '';
