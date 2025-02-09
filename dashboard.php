@@ -37,6 +37,7 @@ try {
             let title = document.getElementById("title").value;
             let dueDate = document.getElementById("due_date").value;
             let description = document.getElementById("description").value;
+            let csrfToken = document.getElementById('csrf_token').value; // ✅ 读取 CSRF 令牌
 
             if (!title || !dueDate) {
                 alert("Title and Due Date are required!");
@@ -46,7 +47,7 @@ try {
             fetch("api/add_task.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `title=${encodeURIComponent(title)}&due_date=${encodeURIComponent(dueDate)}&description=${encodeURIComponent(description)}`
+                body: `title=${encodeURIComponent(title)}&due_date=${encodeURIComponent(dueDate)}&description=${encodeURIComponent(description)}&csrf_token=${encodeURIComponent(csrfToken)}`
             })
             .then(response => response.json())
             .then(data => {
@@ -154,12 +155,12 @@ try {
 
     <div id="message"></div>
 
+    <!--  add CSRF token let JavaScript load -->
+    <input type="hidden" id="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
     <!-- add task -->
     <h2>Add Task</h2>
     <form onsubmit="addTask(event);">
-        <!-- add csrf token (add)-->
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-
         <label for="title">Task Title:</label>
         <input type="text" name="title" id="title" required><br>
 
@@ -190,17 +191,11 @@ try {
                 </div>
 
                 <div class="task-actions">
-                    <!-- add csrf token (update)-->
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-
                     <select onchange="updateTaskStatus(<?php echo $task['id']; ?>, this.value)">
                         <option value="pending" <?php if ($task['status'] === 'pending') echo 'selected'; ?>>Pending</option>
                         <option value="in_progress" <?php if ($task['status'] === 'in_progress') echo 'selected'; ?>>In Progress</option>
                         <option value="completed" <?php if ($task['status'] === 'completed') echo 'selected'; ?>>Completed</option>
                     </select>
-
-                    <!-- add csrf token (delete)-->
-                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
                     <button class="delete-btn" onclick="deleteTask(<?php echo $task['id']; ?>)">Delete</button>
                 </div>
