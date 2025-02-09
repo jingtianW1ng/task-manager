@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 /** force https avoid MITM */
 //if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
